@@ -9,10 +9,14 @@ It spins up an actual LDAP server instance, so you can use it to test
 any sort of client application &mdash; anything that communicates over
 the standard LDAP protocol.
 
-Ladle itself is tested on both JRuby 1.5.2 and Ruby 1.8.7 and 1.9.1.
+Ladle itself is tested on both JRuby 1.7.4 and Ruby 1.8.7, 1.9.3, and 2.0.0.
 It is a wrapper around [ApacheDS][] (a pure-java embeddable LDAP
 server), so it needs Java 1.5 or later available whether you are using
 JRuby or not.
+
+Ladle will not work with MRI on Windows. (A pull request adding this support
+would be eagerly reviewed.) It should work with JRuby on Windows, though this
+hasn't been tested.
 
 [ApacheDS]: http://directory.apache.org/apacheds/1.0/index.html
 
@@ -85,7 +89,7 @@ To use a server per test, use Cucumber's `Around` [hook][cucumber-hooks]:
 If you want just one server, consider something like this:
 
     Before('@ldap') do
-      @ladle ||= Ladle::Server.new(:quiet => true).start
+      $ladle ||= Ladle::Server.new(:quiet => true).start
     end
 
 This will start up a server for the first feature which needs it (and
@@ -95,7 +99,7 @@ end of the run.  (Cucumber's hooks documentation notes that you would,
 in general, need to register an `at_exit` block for the process to be
 torn down at the end.  {Ladle::Server#start} does this automatically.)
 
-[cucumber-hooks]: http://github.com/aslakhellesoy/cucumber/wiki/hooks
+[cucumber-hooks]: http://github.com/cucumber/cucumber/wiki/hooks
 
 Test data
 ---------
@@ -121,9 +125,9 @@ provided by ApacheDS, you'll need to specify a custom schema.  See
 Project links
 -------------
 
-* [API documentation](http://rubydoc.info/github/rsutphin/ladle/master/frames)
-* [Continuous integration](https://ctms-ci.nubic.northwestern.edu/hudson/job/ladle/)
-* [Issue tracking](http://github.com/rsutphin/ladle/issues)
+* [API documentation](http://rubydoc.info/github/NUBIC/ladle/master/frames)
+* [Continuous integration](https://travis-ci.org/NUBIC/ladle)
+* [Issue tracking](http://github.com/NUBIC/ladle/issues)
 
 Non-issue questions can be sent to rhett@detailedbalance.net.
 
